@@ -2,7 +2,7 @@ name: Generate Contribution Snake
 
 on:
   schedule:
-    - cron: "0 0 * * *" 
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
@@ -18,10 +18,14 @@ jobs:
           github_user_name: nigjke
           outputs: dist/github-snake.svg
 
+      - name: Create assets directory
+        run: mkdir -p assets
+
+      - name: Move the generated snake
+        run: mv dist/github-snake.svg assets/
+
       - name: Push the generated snake
         run: |
-          mkdir -p assets
-          mv dist/github-snake.svg assets/
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add assets/github-snake.svg

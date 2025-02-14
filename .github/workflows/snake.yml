@@ -20,11 +20,11 @@ jobs:
 
       - name: Create assets directory
         run: |
-          mkdir -p assets
-          chmod -R 777 assets  # Устанавливаем права на запись
+          mkdir -p $GITHUB_WORKSPACE/assets
+          chmod -R 777 $GITHUB_WORKSPACE/assets  # Устанавливаем права на запись
 
       - name: Move the generated snake
-        run: mv dist/github-snake.svg assets/
+        run: mv $GITHUB_WORKSPACE/dist/github-snake.svg $GITHUB_WORKSPACE/assets/
 
       - name: Push the generated snake
         run: |

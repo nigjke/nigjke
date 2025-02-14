@@ -18,6 +18,9 @@ I am a passionate developer specializing in **React, Javascript, TypeScript, MUI
 ### 📈 GitHub Stats:
 ![Your GitHub Stats](https://github-readme-stats.vercel.app/api?username=nigjke&show_icons=true&theme=tokyonight)
 
+![GitHub stats](https://github-readme-stats.vercel.app/api?username=nigjke&show_icons=true&theme=radical&count_private=true)
+
+
 ### 🌍 Connect with Me:
 [![Instagram](https://img.shields.io/badge/-Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/nigjke)
 [![LeetCode](https://img.shields.io/badge/-LeetCode-FFA116?style=for-the-badge&logo=leetcode&logoColor=white)](https://leetcode.com/nigjke)

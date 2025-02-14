@@ -1,43 +1,90 @@
-name: Generate Contribution Snake
+name: GitHub Snake
 
 on:
-  schedule:
-    - cron: "0 0 * * *"
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  snake:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    # Checkout the repository
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Generate the contribution snake
-        uses: Platane/snk@v3
-        with:
-          github_user_name: nigjke
-          outputs: dist/github-snake.svg
+    # Pull the image for Platane's snake
+    - name: Pull Platane/snk image
+      run: |
+        docker pull platane/snk@sha256:1c8a0b51a75ad8cf36b7defddd2187bdbb92bbbb5521a9e6cc5df795b00fc590
 
-      - name: Create assets directory
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/assets
-          ls -l $GITHUB_WORKSPACE  # Проверим структуру директорий и права
+    # Run Platane/snk to generate the snake image
+    - name: Generate GitHub Snake SVG
+      run: |
+        docker run --name platanesnksha2561c8a0b51a75ad8cf36b7defddd2187bdbb92bbbb5521a9e6cc5df795b00fc590_24b321 \
+          --label 4aedb5 \
+          --workdir /github/workspace \
+          --rm \
+          -e "INPUT_GITHUB_USER_NAME=$GITHUB_ACTOR" \
+          -e "INPUT_OUTPUTS" \
+          -e "INPUT_GITHUB_TOKEN=$GITHUB_TOKEN" \
+          -e "HOME" \
+          -e "GITHUB_JOB" \
+          -e "GITHUB_REF" \
+          -e "GITHUB_SHA" \
+          -e "GITHUB_REPOSITORY" \
+          -e "GITHUB_REPOSITORY_OWNER" \
+          -e "GITHUB_REPOSITORY_OWNER_ID" \
+          -e "GITHUB_RUN_ID" \
+          -e "GITHUB_RUN_NUMBER" \
+          -e "GITHUB_RETENTION_DAYS" \
+          -e "GITHUB_RUN_ATTEMPT" \
+          -e "GITHUB_REPOSITORY_ID" \
+          -e "GITHUB_ACTOR_ID" \
+          -e "GITHUB_ACTOR" \
+          -e "GITHUB_TRIGGERING_ACTOR" \
+          -e "GITHUB_WORKFLOW" \
+          -e "GITHUB_HEAD_REF" \
+          -e "GITHUB_BASE_REF" \
+          -e "GITHUB_EVENT_NAME" \
+          -e "GITHUB_SERVER_URL" \
+          -e "GITHUB_API_URL" \
+          -e "GITHUB_GRAPHQL_URL" \
+          -e "GITHUB_REF_NAME" \
+          -e "GITHUB_REF_PROTECTED" \
+          -e "GITHUB_REF_TYPE" \
+          -e "GITHUB_WORKFLOW_REF" \
+          -e "GITHUB_WORKFLOW_SHA" \
+          -e "GITHUB_WORKSPACE" \
+          -e "GITHUB_ACTION" \
+          -e "GITHUB_EVENT_PATH" \
+          -e "GITHUB_ACTION_REPOSITORY" \
+          -e "GITHUB_ACTION_REF" \
+          -e "GITHUB_PATH" \
+          -e "GITHUB_ENV" \
+          -e "GITHUB_STEP_SUMMARY" \
+          -e "GITHUB_REF_PROTECTED" \
+          -e "GITHUB_SHA"
 
-      - name: Change file permissions
-        run: |
-          sudo chmod 644 $GITHUB_WORKSPACE/dist/github-snake.svg
-          ls -l $GITHUB_WORKSPACE/dist  # Проверим, что права изменены
+    # Create assets directory if it doesn't exist
+    - name: Create assets directory
+      run: mkdir -p $GITHUB_WORKSPACE/assets
 
-      - name: Move the generated snake
-        run: |
-          echo "Attempting to move the file"
-          mv $GITHUB_WORKSPACE/dist/github-snake.svg $GITHUB_WORKSPACE/assets/
-          ls -l $GITHUB_WORKSPACE/assets  # Проверим права директории assets
+    # Ensure write permissions for the assets directory
+    - name: Ensure write permissions
+      run: sudo chmod -R 755 $GITHUB_WORKSPACE/assets
 
-      - name: Push the generated snake
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add assets/github-snake.svg
-          git commit -m "Updated contribution snake" || echo "No changes to commit"
-          git push
+    # Move the generated file to the assets directory
+    - name: Move the file
+      run: mv $GITHUB_WORKSPACE/dist/github-snake.svg $GITHUB_WORKSPACE/assets/github-snake.svg
+
+    # Commit and push the changes
+    - name: Commit and push
+      run: |
+        git add assets/github-snake.svg
+        git commit -m "Add GitHub Snake SVG"
+        git push

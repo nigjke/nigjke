@@ -19,7 +19,9 @@ jobs:
           outputs: dist/github-snake.svg
 
       - name: Create assets directory
-        run: mkdir -p assets
+        run: |
+          mkdir -p assets
+          chmod -R 777 assets  # Устанавливаем права на запись
 
       - name: Move the generated snake
         run: mv dist/github-snake.svg assets/

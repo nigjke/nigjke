@@ -1,7 +1,5 @@
 ### Hi there, I'm Nikita 👋
 
-![Header Image](https://raw.githubusercontent.com/nigjke/profile/main/assets/respoken.gif)
-
 I am a passionate developer specializing in **React, Javascript, TypeScript, MUI, MySQL and C#**. Constantly learning and building cool projects.
 
 ### 🛠 Tech Experience :

@@ -23,10 +23,14 @@ jobs:
           mkdir -p $GITHUB_WORKSPACE/assets
           ls -l $GITHUB_WORKSPACE  # Проверим структуру директорий и права
 
+      - name: Change file permissions
+        run: |
+          sudo chmod 644 $GITHUB_WORKSPACE/dist/github-snake.svg
+          ls -l $GITHUB_WORKSPACE/dist  # Проверим, что права изменены
+
       - name: Move the generated snake
         run: |
           echo "Attempting to move the file"
-          ls -l $GITHUB_WORKSPACE/dist  # Проверим, что файл существует
           mv $GITHUB_WORKSPACE/dist/github-snake.svg $GITHUB_WORKSPACE/assets/
           ls -l $GITHUB_WORKSPACE/assets  # Проверим права директории assets
 
